@@ -1,4 +1,5 @@
 resource "aws_security_group" "lb_sg" {
+  provider    = aws.use2
   name        = "LoadBalancer-SG"
   description = "Security group for PrivateLink load balancer"
   vpc_id      = aws_vpc.main.id
@@ -9,6 +10,7 @@ resource "aws_security_group" "lb_sg" {
 }
 
 resource "aws_security_group" "collector_sg" {
+  provider    = aws.use2
   name        = "Collector-SG"
   description = "Security group for OTel collector"
   vpc_id      = aws_vpc.main.id
@@ -19,6 +21,7 @@ resource "aws_security_group" "collector_sg" {
 }
 
 resource "aws_security_group_rule" "allow_lb_otlp_inbound" {
+  provider          = aws.use2
   type              = "ingress"
   from_port         = 9990
   to_port           = 9990
@@ -30,6 +33,7 @@ resource "aws_security_group_rule" "allow_lb_otlp_inbound" {
 
 
 resource "aws_security_group_rule" "allow_lb_otlp_outbound" {
+  provider                 = aws.use2
   type                     = "egress"
   from_port                = 9990
   to_port                  = 9990
@@ -41,6 +45,7 @@ resource "aws_security_group_rule" "allow_lb_otlp_outbound" {
 
 
 resource "aws_security_group_rule" "allow_collector_otlp_inbound" {
+  provider                 = aws.use2
   type                     = "ingress"
   from_port                = 9990
   to_port                  = 9990
@@ -51,6 +56,7 @@ resource "aws_security_group_rule" "allow_collector_otlp_inbound" {
 }
 
 resource "aws_security_group_rule" "allow_collector_otlp_outbound" {
+  provider          = aws.use2
   type              = "egress"
   from_port         = 443
   to_port           = 443

@@ -1,4 +1,5 @@
 resource "aws_lb" "private_link_lb" {
+  provider           = aws.use2
   name               = "o11y-privatelink-lb"
   internal           = true
   load_balancer_type = "network"

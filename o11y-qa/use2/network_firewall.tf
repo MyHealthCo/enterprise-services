@@ -1,4 +1,5 @@
 resource "aws_networkfirewall_firewall" "o11y_qa_firewall" {
+  provider               = aws.use2
   name                   = "o11y-qa-firewall"
   firewall_policy_arn    = aws_networkfirewall_firewall_policy.o11y_qa_firewall_policy.arn
   vpc_id                 = aws_vpc.main.id
@@ -20,10 +21,11 @@ resource "aws_networkfirewall_firewall" "o11y_qa_firewall" {
 }
 
 resource "aws_networkfirewall_firewall_policy" "o11y_qa_firewall_policy" {
-  name = "o11y-qa-firewall-policy"
+  provider = aws.use2
+  name     = "o11y-qa-firewall-policy"
 
   firewall_policy {
-    stateless_default_actions = ["aws:pass"]
+    stateless_default_actions          = ["aws:pass"]
     stateless_fragment_default_actions = ["aws:drop"]
     stateful_rule_group_reference {
       resource_arn = aws_networkfirewall_rule_group.o11y_honeycomb_rule_group.arn
@@ -36,6 +38,7 @@ resource "aws_networkfirewall_firewall_policy" "o11y_qa_firewall_policy" {
 }
 
 resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
+  provider = aws.use2
   name     = "o11y-honeycomb-rule-group"
   capacity = 100
   type     = "STATEFUL"
@@ -44,25 +47,25 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
     rules_source {
       rules_source_list {
         generated_rules_type = "ALLOWLIST"
-        target_types = ["HTTP_HOST"]
-        targets = ["api.honeycomb.io"]
+        target_types         = ["HTTP_HOST"]
+        targets              = ["api.honeycomb.io"]
       }
     }
   }
 
   tags = {
-    Name = "o11y-honeycomb-rule-group"
+    Name           = "o11y-honeycomb-rule-group"
     TradingPartner = "Honeycomb.io"
   }
 }
 
 locals {
-    firewall_endpoints = {
-        for k, v in aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status[0].sync_states :
-        k => v.attachment[0].endpoint_id
-    }
+  firewall_endpoints = {
+    for k, v in aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status[0].sync_states :
+    k => v.attachment[0].endpoint_id
+  }
 }
 
 output "firewall_endpoints" {
-    value = local.firewall_endpoints
+  value = local.firewall_endpoints
 }
