@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "allow_lb_otlp_inbound" {
   to_port           = 9990
   protocol          = "tcp"
   security_group_id = aws_security_group.lb_sg.id
-  cidr_blocks       = "0.0.0.0/0"
+  cidr_blocks       = ["0.0.0.0/0"]
   description       = "Allow inbound TLS traffic"
 }
 
@@ -56,6 +56,6 @@ resource "aws_security_group_rule" "allow_collector_otlp_outbound" {
   to_port           = 443
   protocol          = "tcp"
   security_group_id = aws_security_group.collector_sg.id
-  cidr_blocks       = "0.0.0.0/0"
+  cidr_blocks       = ["0.0.0.0/0"]
   description       = "Allow outbound OTLP traffic"
 }

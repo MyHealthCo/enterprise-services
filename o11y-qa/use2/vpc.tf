@@ -86,21 +86,21 @@ resource "aws_network_acl" "standard" {
   vpc_id   = aws_vpc.main.id
 
   egress {
-    rule_no     = 1000
-    protocol    = "-1"
-    rule_action = "allow"
-    cidr_block  = "0.0.0.0/0"
-    from_port   = 0
-    to_port     = 0
+    rule_no    = 1000
+    protocol   = "-1"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
   }
 
   ingress {
-    rule_number = 1000
-    protocol    = "-1"
-    rule_action = "allow"
-    cidr_block  = "0.0.0.0/0"
-    from_port   = 0
-    to_port     = 0
+    rule_no    = 1000
+    protocol   = "-1"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
   }
 
   tags = {
@@ -202,7 +202,7 @@ resource "aws_network_acl_association" "inspection_use2c" {
 resource "aws_network_acl_association" "public_nat_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_nat_use2a.id
-  network_ack_id = aws_network_acl.standard.id
+  network_acl_id = aws_network_acl.standard.id
 }
 
 resource "aws_network_acl_association" "public_nat_use2b" {
@@ -448,7 +448,7 @@ resource "aws_subnet" "public_use2c" {
   provider          = aws.use2
   vpc_id            = aws_vpc_ipv4_cidr_block_association.public_cidr_range.vpc_id
   availability_zone = "us-east-2c"
-  cidr_block        = cidrsubnets(var.public_idr_range, 2, 2, 2, 2)[2]
+  cidr_block        = cidrsubnets(var.public_cidr_range, 2, 2, 2, 2)[2]
 
   tags = {
     Name  = "o11y-qa-public-nat-az2c"
@@ -459,7 +459,7 @@ resource "aws_subnet" "public_use2c" {
 # EIP and NAT Gateways
 resource "aws_eip" "nat_use2a" {
   provider         = aws.use2
-  vpc              = true
+  domain = "vpc"
   public_ipv4_pool = "amazon"
 
   tags = {
@@ -469,7 +469,7 @@ resource "aws_eip" "nat_use2a" {
 
 resource "aws_eip" "nat_use2b" {
   provider         = aws.use2
-  vpc              = true
+  domain = "vpc"
   public_ipv4_pool = "amazon"
 
   tags = {
@@ -479,7 +479,7 @@ resource "aws_eip" "nat_use2b" {
 
 resource "aws_eip" "nat_use2c" {
   provider         = aws.use2
-  vpc              = true
+  domain = "vpc"
   public_ipv4_pool = "amazon"
 
   tags = {
@@ -914,21 +914,21 @@ resource "aws_route_table_association" "inspection_use2c" {
 
 resource "aws_route_table_association" "nat_egress_use2a" {
   provider       = aws.use2
-  subnet_id      = aws_subnet.public_nat_use2a.id
+  subnet_id      = aws_subnet.public_use2a.id
   route_table_id = aws_route_table.public_nat_egress.id
 
 }
 
 resource "aws_route_table_association" "nat_egress_use2b" {
   provider       = aws.use2
-  subnet_id      = aws_subnet.public_nat_use2b.id
+  subnet_id      = aws_subnet.public_use2b.id
   route_table_id = aws_route_table.public_nat_egress.id
 
 }
 
 resource "aws_route_table_association" "nat_egress_use2c" {
   provider       = aws.use2
-  subnet_id      = aws_subnet.public_nat_use2c.id
+  subnet_id      = aws_subnet.public_use2c.id
   route_table_id = aws_route_table.public_nat_egress.id
 
 }
