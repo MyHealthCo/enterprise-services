@@ -47,7 +47,7 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
     rules_source {
       rules_source_list {
         generated_rules_type = "ALLOWLIST"
-        target_types         = ["HTTP_HOST"]
+        target_types         = ["HTTP_HOST", "TLS_SNI"]
         targets              = ["api.honeycomb.io"]
       }
     }
@@ -61,8 +61,8 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
 
 locals {
   firewall_endpoints = {
-    for k, v in aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status[0].sync_states :
-    k => v.attachment[0].endpoint_id
+    for state in aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status[0].sync_states :
+    state.availability_zone => state.attachment[0].endpoint_id
   }
 }
 
