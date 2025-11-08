@@ -201,19 +201,19 @@ resource "aws_network_acl_association" "inspection_use2c" {
 
 resource "aws_network_acl_association" "public_nat_use2a" {
   provider       = aws.use2
-  subnet_id      = aws_subnet.public_nat_use2a.id
+  subnet_id      = aws_subnet.public_use2a.id
   network_acl_id = aws_network_acl.standard.id
 }
 
 resource "aws_network_acl_association" "public_nat_use2b" {
   provider       = aws.use2
-  subnet_id      = aws_subnet.public_nat_use2b.id
+  subnet_id      = aws_subnet.public_use2b.id
   network_acl_id = aws_network_acl.standard.id
 }
 
 resource "aws_network_acl_association" "public_nat_use2c" {
   provider       = aws.use2
-  subnet_id      = aws_subnet.public_nat_use2c.id
+  subnet_id      = aws_subnet.public_use2c.id
   network_acl_id = aws_network_acl.standard.id
 }
 
@@ -459,7 +459,7 @@ resource "aws_subnet" "public_use2c" {
 # EIP and NAT Gateways
 resource "aws_eip" "nat_use2a" {
   provider         = aws.use2
-  domain = "vpc"
+  domain           = "vpc"
   public_ipv4_pool = "amazon"
 
   tags = {
@@ -469,7 +469,7 @@ resource "aws_eip" "nat_use2a" {
 
 resource "aws_eip" "nat_use2b" {
   provider         = aws.use2
-  domain = "vpc"
+  domain           = "vpc"
   public_ipv4_pool = "amazon"
 
   tags = {
@@ -479,7 +479,7 @@ resource "aws_eip" "nat_use2b" {
 
 resource "aws_eip" "nat_use2c" {
   provider         = aws.use2
-  domain = "vpc"
+  domain           = "vpc"
   public_ipv4_pool = "amazon"
 
   tags = {
@@ -817,63 +817,54 @@ resource "aws_route_table_association" "lb_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.lb_use2a.id
   route_table_id = aws_route_table.private_use2a_route_table.id
-
 }
 
 resource "aws_route_table_association" "lb_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.lb_use2b.id
   route_table_id = aws_route_table.private_use2b_route_table.id
-
 }
 
 resource "aws_route_table_association" "lb_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.lb_use2c.id
   route_table_id = aws_route_table.private_use2c_route_table.id
-
 }
 
 resource "aws_route_table_association" "compute_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.compute_use2a.id
   route_table_id = aws_route_table.private_use2a_route_table.id
-
 }
 
 resource "aws_route_table_association" "compute_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.compute_use2b.id
   route_table_id = aws_route_table.private_use2b_route_table.id
-
 }
 
 resource "aws_route_table_association" "compute_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.compute_use2c.id
   route_table_id = aws_route_table.private_use2c_route_table.id
-
 }
 
 resource "aws_route_table_association" "service_endpoint_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_endpoint_use2a.id
   route_table_id = aws_route_table.private_use2a_route_table.id
-
 }
 
 resource "aws_route_table_association" "service_endpoint_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_endpoint_use2b.id
   route_table_id = aws_route_table.private_use2b_route_table.id
-
 }
 
 resource "aws_route_table_association" "service_endpoint_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_endpoint_use2c.id
   route_table_id = aws_route_table.private_use2c_route_table.id
-
 }
 
 resource "aws_route_table_association" "service_provider_use2_az1" {
@@ -915,20 +906,17 @@ resource "aws_route_table_association" "inspection_use2c" {
 resource "aws_route_table_association" "nat_egress_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_use2a.id
-  route_table_id = aws_route_table.public_nat_egress.id
-
+  route_table_id = aws_route_table.public_use2a_route_table.id
 }
 
 resource "aws_route_table_association" "nat_egress_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_use2b.id
-  route_table_id = aws_route_table.public_nat_egress.id
-
+  route_table_id = aws_route_table.public_use2b_route_table.id
 }
 
 resource "aws_route_table_association" "nat_egress_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_use2c.id
-  route_table_id = aws_route_table.public_nat_egress.id
-
+  route_table_id = aws_route_table.public_use2c_route_table.id
 }
