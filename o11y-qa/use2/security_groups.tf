@@ -1,7 +1,7 @@
 resource "aws_security_group" "lb_sg" {
   name        = "LoadBalancer-SG"
   description = "Security group for PrivateLink load balancer"
-  vpc_id      = aws.vpc.main.id
+  vpc_id      = aws_vpc.main.id
 
   tags = {
     Name = "LoadBalancer-SG"
@@ -11,7 +11,7 @@ resource "aws_security_group" "lb_sg" {
 resource "aws_security_group" "collector_sg" {
   name        = "Collector-SG"
   description = "Security group for OTel collector"
-  vpc_id      = aws.vpc.main.id
+  vpc_id      = aws_vpc.main.id
 
   tags = {
     Name = "Collector-SG"
@@ -35,7 +35,7 @@ resource "aws_security_group_rule" "allow_lb_otlp_outbound" {
   to_port                  = 9990
   protocol                 = "tcp"
   security_group_id        = aws_security_group.lb_sg.id
-  security_group_source_id = aws_security_group.collector_sg.id
+  source_security_group_id = aws_security_group.collector_sg.id
   description              = "Allow inbound OTel traffic from LoadBalancer-SG"
 }
 
@@ -46,7 +46,7 @@ resource "aws_security_group_rule" "allow_collector_otlp_inbound" {
   to_port                  = 9990
   protocol                 = "tcp"
   security_group_id        = aws_security_group.collector_sg.id
-  security_group_source_id = aws_security_group.lb_sg.id
+  source_security_group_id = aws_security_group.lb_sg.id
   description              = "Allow inbound OTel traffic from LoadBalancer-SG"
 }
 
