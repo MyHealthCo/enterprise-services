@@ -1,63 +1,64 @@
 variable "tag_contact" {
-    type = string
-    default = "djfurman@gmail.com"
+  type    = string
+  default = "djfurman@gmail.com"
 }
 
 variable "tag_created_via" {
-    type = string
-    default = "OpenTofu"
+  type    = string
+  default = "OpenTofu"
 }
 
 variable "tag_env" {
-    type = string
-    default = "staging"
+  type    = string
+  default = "staging"
 }
 
 variable "tag_project" {
-    type = string
-    default = "MyHealthCo"
+  type    = string
+  default = "MyHealthCo"
 }
 
-variable tag_purpose {
-    type = string
-    default = "o11y"
-}
-
-provider "aws" {
-    alias = "use2"
-    region = "us-east-2"
-
-    default_tags {
-        tags = {
-            Contact = var.tag_contact
-            CreatedVia = var.tag_created_via
-            Environment = var.tag_env
-            Project = var.tag_project
-            Purpose = var.tag_purpose
-        }
-    }
+variable "tag_purpose" {
+  type    = string
+  default = "o11y"
 }
 
 provider "aws" {
-    alias = "usw2"
-    region = "us-west-2"
+  alias  = "use2"
+  region = "us-east-2"
 
-    default_tags {
-        tags = {
-            Contact = var.tag_contact
-            CreatedVia = var.tag_created_via
-            Environment = var.tag_env
-            Project = var.tag_project
-            Purpose = var.tag_purpose
-        }
+  default_tags {
+    tags = {
+      Contact     = var.tag_contact
+      CreatedVia  = var.tag_created_via
+      Environment = var.tag_env
+      Project     = var.tag_project
+      Purpose     = var.tag_purpose
     }
+  }
+}
+
+provider "aws" {
+  alias  = "usw2"
+  region = "us-west-2"
+  profile = "MyHealthCo-o11y-qa"
+
+  default_tags {
+    tags = {
+      Contact     = var.tag_contact
+      CreatedVia  = var.tag_created_via
+      Environment = var.tag_env
+      Project     = var.tag_project
+      Purpose     = var.tag_purpose
+    }
+  }
 }
 
 terraform {
   required_providers {
     aws = {
-      source = "opentofu/aws"
-      version = "6.19.0"
+      source  = "opentofu/aws"
+      version = "6.20.0"
     }
   }
 }
