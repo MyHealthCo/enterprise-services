@@ -575,7 +575,7 @@ resource "aws_route" "lb_use2b_to_private" {
   gateway_id             = "local"
 }
 
-resource "aws_route" "lb_use2a_to_private" {
+resource "aws_route" "lb_use2c_to_private" {
   provider               = aws.use2
   route_table_id         = aws_route_table.private_use2c_route_table.id
   destination_cidr_block = aws_subnet.lb_use2c.cidr_block
