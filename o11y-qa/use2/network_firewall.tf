@@ -56,3 +56,13 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
   }
 }
 
+locals {
+    firewall_endpoints = {
+        for k, v in aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status[0].sync_states :
+        k => v.attachment[0].endpoint_id
+    }
+}
+
+output "firewall_endpoints" {
+    value = local.firewall_endpoints
+}

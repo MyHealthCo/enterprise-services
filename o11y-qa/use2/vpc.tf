@@ -648,19 +648,22 @@ resource "aws_route" "service_endpoint_use2c_to_private" {
 resource "aws_route" "default_use2a_to_firewall" {
   provider        = aws.use2
   route_table_id  = aws_route_table.private_use2a_route_table.id
-  vpc_endpoint_id = aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status.sync_states[0].attachment[0].endpoint_id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id = local.firewall_endpoints["us-east-2a"]
 }
 
 resource "aws_route" "default_use2b_to_firewall" {
   provider        = aws.use2
   route_table_id  = aws_route_table.private_use2b_route_table.id
-  vpc_endpoint_id = aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status.sync_states[0].attachment[1].endpoint_id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id = local.firewall_endpoints["us-east-2b"]
 }
 
 resource "aws_route" "default_use2c_to_firewall" {
   provider        = aws.use2
   route_table_id  = aws_route_table.private_use2c_route_table.id
-  vpc_endpoint_id = aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status.sync_states[0].attachment[2].endpoint_id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id = local.firewall_endpoints["us-east-2c"]
 }
 
 ## Inspection Route Tables
