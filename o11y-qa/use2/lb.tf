@@ -5,9 +5,9 @@ resource "aws_lb" "private_link_lb" {
   load_balancer_type = "network"
 
   subnets = [
-    aws_subnet.lb_use2a.id,
-    aws_subnet.lb_use2b.id,
-    aws_subnet.lb_use2c.id,
+    aws_subnet.service_provider_use2_az1.id,
+    aws_subnet.service_provider_use2_az2.id,
+    aws_subnet.service_provider_use2_az3.id,
   ]
 
   security_groups = [
