@@ -1,6 +1,6 @@
-resource "aws_ecr_repository" "otel_collector" {
+resource "aws_ecr_repository" "gateway_collector" {
   provider             = aws.use2
-  name                 = "o11y/otel-collector-contrib"
+  name                 = "o11y/gateway-collector"
   image_tag_mutability = "IMMUTABLE"
 
   image_scanning_configuration {
@@ -8,6 +8,6 @@ resource "aws_ecr_repository" "otel_collector" {
   }
 
   tags = {
-    Name = "o11y-qa-otel-collector-repo"
+    Name = "o11y-qa-otel-gateway-collector-repo"
   }
 }
