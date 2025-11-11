@@ -59,6 +59,46 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
   }
 }
 
+resource "aws_networkfirewall_logging_configuration" "o11y_qa_firewall_logging" {
+  provider                    = aws.use2
+  enable_monitoring_dashboard = true
+  firewall_arn                = aws_networkfirewall_firewall.o11y_qa_firewall.arn
+
+  logging_configuration {
+    log_destination_config {
+      log_destination      = aws_cloudwatch_log_group.network_firewall_log_group.name
+      log_destination_type = "CloudWatchLogs"
+      log_type             = "ALERT"
+    }
+
+
+    log_destination_config {
+      log_destination      = aws_cloudwatch_log_group.network_firewall_log_group.name
+      log_destination_type = "CloudWatchLogs"
+      log_type             = "FLOW"
+    }
+
+
+    log_destination_config {
+      log_destination      = aws_cloudwatch_log_group.network_firewall_log_group.name
+      log_destination_type = "CloudWatchLogs"
+      log_type             = "TLS"
+    }
+
+  }
+}
+
+resource "aws_cloudwatch_log_group" "network_firewall_log_group" {
+  provider          = aws.use2
+  name              = "/aws/network-firewall/o11y-qa-firewall-log-group"
+  log_group_class   = "DELIVERY"
+  retention_in_days = 1
+
+  tags = {
+    Name = "o11y-qa-firewall-log-group"
+  }
+}
+
 locals {
   firewall_endpoints = {
     for state in aws_networkfirewall_firewall.o11y_qa_firewall.firewall_status[0].sync_states :
