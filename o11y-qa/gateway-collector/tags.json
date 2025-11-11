@@ -1,0 +1,7 @@
+[
+  {"Key": "Contact", "Value": "djfurman@gmail.com"},
+  {"Key": "CreatedVia", "Value": "CloudFormation"},
+  {"Key": "Environment", "Value": "staging"},
+  {"Key": "Project", "Value": "MyHealthCo"},
+  {"Key": "Purpose", "Value": "o11y"}
+]

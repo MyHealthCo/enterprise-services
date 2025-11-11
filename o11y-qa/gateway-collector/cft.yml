@@ -1,0 +1,153 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for Deploying a Fargate Hosted application with an existing Network Load Balancer
+Parameters:
+  AppName:
+    Type: String
+    Description: Name of the application
+  AppEcrRepoUrl:
+    Type: String
+    Description: ECR Repository URL for the application
+  AppEcrReleaseTag:
+    Type: String
+    Description: ECR Release Tag for the application
+  AppIamRole:
+    Type: String
+    Description: IAM Role ARN for the application
+  AppNlbArn:
+    Type: String
+    Description: ARN of the existing Network Load Balancer
+  AppSecurityGroups:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+    Description: Security Groups for the application
+  AppSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets for the application
+  AppVpcId:
+    Type: String
+    Description: VPC ID for the application
+  HONEYCOMB_HOST:
+    Type: String
+    Description: Honeycomb Host
+  HONEYCOMB_PORT:
+    Type: String
+    Description: Honeycomb Port
+
+Resources:
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub ${AppName}-cluster
+      CapacityProviders:
+        - FARGATE
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub /ecs/${AppName}
+      RetentionInDays: 1
+
+  ECSTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Environment:
+          - Name: HONEYCOMB_HOST
+            Value: !Ref HONEYCOMB_HOST
+          - Name: HONEYCOMB_PORT
+            Value: !Ref HONEYCOMB_PORT
+          Essential: true
+          Image: !Sub ${AppEcrRepoUrl}:${AppEcrReleaseTag}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: !Sub ${AppName}
+              max-buffer-size: "10m"
+              mode: non-blocking
+          Name: !Sub ${AppName}-task
+          Secrets:
+            - Name: HONEYCOMB_API_KEY
+              ValueFrom: '{{resolve:secretsmanager:HoneycombApiKey:SecretString:API_KEY}}'
+          PortMappings:
+          - ContainerPort: 4317
+            Protocol: tcp
+          - ContainerPort: 13133
+            Protocol: tcp
+      Cpu: 1 vCPU
+      ExecutionRoleArn: !Ref AppIamRole
+      Memory: 3 GB
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      RuntimePlatform:
+        CpuArchitecture: ARM64
+        OperatingSystemFamily: LINUX
+      TaskRoleArn: !Ref AppIamRole
+
+  ECSService:
+    Type: AWS::ECS::Service
+    DependsOn: NLBListenerRule
+    Properties:
+      AvailabilityZoneRebalancing: "ENABLED"
+      CapacityProviderStrategy:
+        - CapacityProvider: FARGATE
+          Weight: 1
+      Cluster: !Ref ECSCluster
+      DeploymentConfiguration:
+        MaximumPercent: 300
+        MinimumHealthyPercent: 100
+      DeploymentCircuitBreaker:
+        Enable: true
+        Rollback: true
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 3
+      EnableECSManagedTags: true
+      EnableExecuteCommand: false
+      HealthCheckGracePeriodSeconds: 15
+      LoadBalancers:
+        - ContainerName: !Sub ${AppName}-task
+          ContainerPort: 4317
+          TargetGroupArn: !Ref ELBTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups: !Ref AppSecurityGroups
+          Subnets: !Ref AppSubnetIds
+      PlatformVersion: LATEST
+      PropagateTags: TASK_DEFINITION
+      ServiceName: !Sub ${AppName}-service
+      TaskDefinition: !Ref ECSTaskDefinition
+
+  ELBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ELBTargetGroup
+      LoadBalancerArn: !Ref AppNlbArn
+      Port: 9990
+      Protocol: TCP
+
+  ELBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${AppName}-tg
+      Port: '4317'
+      Protocol: TCP
+      TargetType: ip
+      VpcId: !Ref AppVpcId
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPort: '13133'
+      HealthCheckProtocol: TCP
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 3

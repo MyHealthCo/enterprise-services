@@ -1,6 +1,42 @@
 [
   {
-    "ParameterKey": "",
+    "ParameterKey": "AppName",
+    "ParameterValue": "gateway-collector"
+  },
+  {
+    "ParameterKey": "AppEcrRepoUrl",
     "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "AppEcrReleaseTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "AppIamRole",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "AppNlbArn",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "AppSecurityGroups",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "AppSubnetIds",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "AppVpcId",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "HONEYCOMB_HOST",
+    "ParameterValue": "api.honeycomb.io"
+  },
+  {
+    "ParameterKey": "HONEYCOMB_PORT",
+    "ParameterValue": "443"
   }
 ]
