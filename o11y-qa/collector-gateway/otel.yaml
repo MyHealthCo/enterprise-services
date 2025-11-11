@@ -52,7 +52,7 @@ service:
       processors: [batch, memory_limiter]
       exporters: [otlp/honeycomb]
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, prometheus]
       processors: [batch, memory_limiter]
       exporters: [otlp/honeycomb]
     logs:
