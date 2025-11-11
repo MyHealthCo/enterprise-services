@@ -280,7 +280,7 @@ resource "aws_subnet" "service_provider_use2_az1" {
 
   tags = {
     Name  = "o11y-qa-provider-use2-az1"
-    Usage = "ServiceProvider"
+    Usage = "ServiceProviders"
   }
 }
 
@@ -292,7 +292,7 @@ resource "aws_subnet" "service_provider_use2_az2" {
 
   tags = {
     Name  = "o11y-qa-provider-use2-az2"
-    Usage = "ServiceProvider"
+    Usage = "ServiceProviders"
   }
 }
 
@@ -304,7 +304,7 @@ resource "aws_subnet" "service_provider_use2_az3" {
 
   tags = {
     Name  = "o11y-qa-provider-use2-az3"
-    Usage = "ServiceProvider"
+    Usage = "ServiceProviders"
   }
 }
 
@@ -317,7 +317,7 @@ resource "aws_subnet" "service_endpoint_use2a" {
 
   tags = {
     Name  = "o11y-qa-service-endpoint-az2a"
-    Usage = "ServiceEndpoint"
+    Usage = "ServiceEndpoints"
   }
 }
 
@@ -329,7 +329,7 @@ resource "aws_subnet" "service_endpoint_use2b" {
 
   tags = {
     Name  = "o11y-qa-service-endpoint-az2b"
-    Usage = "ServiceEndpoint"
+    Usage = "ServiceEndpoints"
   }
 }
 
@@ -341,7 +341,7 @@ resource "aws_subnet" "service_endpoint_use2c" {
 
   tags = {
     Name  = "o11y-qa-service-endpoint-az2c"
-    Usage = "ServiceEndpoint"
+    Usage = "ServiceEndpoints"
   }
 }
 
