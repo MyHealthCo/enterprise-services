@@ -1,0 +1,61 @@
+---
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'gateway-self-metrics'
+          scrape_interval: 1m
+          static_configs:
+            - targets: ['0.0.0.0:9999']
+
+processors:
+  batch:
+  memory_limiter:
+    limit_mib: 300
+    spike_limit_mib: 50
+    check_interval: 5s
+
+exporters:
+  otlp/honeycomb:
+    endpoint: "${HONEYCOMB_HOST}:${HONEYCOMB_PORT}"
+    headers:
+      "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+    compression: gzip
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+  pprof:
+  zpages:
+
+service:
+  extensions:
+    - health_check
+    - pprof
+    - zpages
+  telemetry:
+    metrics:
+      level: detailed
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: '0.0.0.0'
+                port: 9999
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [otlp/honeycomb]
+    metrics:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [otlp/honeycomb]
+    logs:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [otlp/honeycomb]
