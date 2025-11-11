@@ -18,6 +18,11 @@ processors:
     limit_mib: 300
     spike_limit_mib: 50
     check_interval: 5s
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: "staging"
+        action: upsert
 
 exporters:
   otlp/honeycomb:
@@ -49,13 +54,13 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [batch, memory_limiter]
+      processors: [batch, memory_limiter, resource]
       exporters: [otlp/honeycomb]
     metrics:
       receivers: [otlp, prometheus]
-      processors: [batch, memory_limiter]
+      processors: [batch, memory_limiter, resource]
       exporters: [otlp/honeycomb]
     logs:
       receivers: [otlp]
-      processors: [batch, memory_limiter]
+      processors: [batch, memory_limiter, resource]
       exporters: [otlp/honeycomb]
