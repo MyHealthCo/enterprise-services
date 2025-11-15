@@ -10,7 +10,7 @@ data "aws_organizations_organization" "current" {
 resource "aws_vpc_endpoint" "ecr_api" {
     provider = aws.use2
     private_dns_enabled = true
-    service_name = "com.amazonaws.${aws_iam_policy.network_firewall.provider.region}.ecr.api"
+    service_name = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
 
     subnet_ids = [
         aws_subnet.service_endpoint_use2a.id,
@@ -53,7 +53,7 @@ resource "aws_vpc_endpoint_policy" "ecr_api" {
 resource "aws_vpc_endpoint" "ecr_dkr" {
     provider = aws.use2
     private_dns_enabled = true
-    service_name = "com.amazonaws.${aws_iam_policy.network_firewall.provider.region}.ecr.dkr"
+    service_name = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
 
     subnet_ids = [
         aws_subnet.service_endpoint_use2a.id,
@@ -96,7 +96,7 @@ resource "aws_vpc_endpoint_policy" "ecr_dkr" {
 resource "aws_vpc_endpoint" "logs" {
     provider = aws.use2
     private_dns_enabled = true
-    service_name = "com.amazonaws.${aws_iam_policy.network_firewall.provider.region}.logs"
+    service_name = "com.amazonaws.${data.aws_region.current.name}.logs"
 
     subnet_ids = [
         aws_subnet.service_endpoint_use2a.id,
@@ -145,7 +145,7 @@ resource "aws_vpc_endpoint_policy" "logs" {
 
 resource "aws_vpc_endpoint" "s3" {
     provider = aws.use2
-    service_name = "com.amazonaws.${aws_iam_policy.network_firewall.provider.region}.s3"
+    service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
 
     vpc_endpoint_type = "Gateway"
     vpc_id = aws_vpc.main.id
@@ -191,7 +191,7 @@ resource "aws_vpc_endpoint_policy" "s3" {
                 Resource = [
                   "arn:aws:s3:::prod.${data.aws_caller_identity.current.account_id}.appinfo.src/*",
                   "arn:aws:s3:::cloudformation-custom-resource-response-useast2/*",
-                  "arn:aws:s3:::cloudformation-waitcondition-${data.aws_caller_identity.current.region}/*",
+                  "arn:aws:s3:::cloudformation-waitcondition-${data.aws_region.current.name}/*",
                 ]
 
             }

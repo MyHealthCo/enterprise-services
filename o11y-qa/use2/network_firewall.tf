@@ -47,8 +47,13 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
     rules_source {
       rules_source_list {
         generated_rules_type = "ALLOWLIST"
-        target_types         = ["HTTP_HOST", "TLS_SNI"]
-        targets              = ["api.honeycomb.io"]
+        target_types = [
+          "HTTP_HOST",
+          "TLS_SNI"
+        ]
+        targets = [
+          "api.honeycomb.io"
+        ]
       }
     }
   }
@@ -60,27 +65,32 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb_rule_group" {
 }
 
 resource "aws_networkfirewall_logging_configuration" "o11y_qa_firewall_logging" {
-  provider                    = aws.use2
-  enable_monitoring_dashboard = true
-  firewall_arn                = aws_networkfirewall_firewall.o11y_qa_firewall.arn
+  provider     = aws.use2
+  firewall_arn = aws_networkfirewall_firewall.o11y_qa_firewall.arn
 
   logging_configuration {
     log_destination_config {
-      log_destination      = aws_cloudwatch_log_group.network_firewall_log_group.name
+      log_destination = {
+        logGroup = aws_cloudwatch_log_group.network_firewall_log_group.name
+      }
       log_destination_type = "CloudWatchLogs"
       log_type             = "ALERT"
     }
 
 
     log_destination_config {
-      log_destination      = aws_cloudwatch_log_group.network_firewall_log_group.name
+      log_destination = {
+        logGroup = aws_cloudwatch_log_group.network_firewall_log_group.name
+      }
       log_destination_type = "CloudWatchLogs"
       log_type             = "FLOW"
     }
 
 
     log_destination_config {
-      log_destination      = aws_cloudwatch_log_group.network_firewall_log_group.name
+      log_destination = {
+        logGroup = aws_cloudwatch_log_group.network_firewall_log_group.name
+      }
       log_destination_type = "CloudWatchLogs"
       log_type             = "TLS"
     }

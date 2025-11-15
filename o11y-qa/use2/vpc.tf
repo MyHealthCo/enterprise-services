@@ -8,17 +8,17 @@ variable "lb_cidr_range" {
 
 variable "service_provider_cidr_range" {
   type    = string
-  default = "10.100.32.0/19"
+  default = "10.100.0.0/19"
 }
 
 variable "service_endpoint_cidr_range" {
   type    = string
-  default = "10.100.64.0/19"
+  default = "10.100.32.0/19"
 }
 
 variable "compute_cidr_range" {
   type    = string
-  default = "10.1.4.0/22"
+  default = "10.2.0.0/22"
 }
 
 variable "inspection_cidr_range" {
@@ -313,7 +313,7 @@ resource "aws_subnet" "service_endpoint_use2a" {
   provider          = aws.use2
   vpc_id            = aws_vpc_ipv4_cidr_block_association.service_endpoint_cidr_range.vpc_id
   availability_zone = "us-east-2a"
-  cidr_block        = cidrsubnets(var.compute_cidr_range, 2, 2, 2, 2)[0]
+  cidr_block        = cidrsubnets(var.service_endpoint_cidr_range, 2, 2, 2, 2)[0]
 
   tags = {
     Name  = "o11y-qa-service-endpoint-az2a"
@@ -325,7 +325,7 @@ resource "aws_subnet" "service_endpoint_use2b" {
   provider          = aws.use2
   vpc_id            = aws_vpc_ipv4_cidr_block_association.service_endpoint_cidr_range.vpc_id
   availability_zone = "us-east-2b"
-  cidr_block        = cidrsubnets(var.compute_cidr_range, 2, 2, 2, 2)[1]
+  cidr_block        = cidrsubnets(var.service_endpoint_cidr_range, 2, 2, 2, 2)[1]
 
   tags = {
     Name  = "o11y-qa-service-endpoint-az2b"
@@ -337,7 +337,7 @@ resource "aws_subnet" "service_endpoint_use2c" {
   provider          = aws.use2
   vpc_id            = aws_vpc_ipv4_cidr_block_association.service_endpoint_cidr_range.vpc_id
   availability_zone = "us-east-2c"
-  cidr_block        = cidrsubnets(var.compute_cidr_range, 2, 2, 2, 2)[2]
+  cidr_block        = cidrsubnets(var.service_endpoint_cidr_range, 2, 2, 2, 2)[2]
 
   tags = {
     Name  = "o11y-qa-service-endpoint-az2c"
@@ -528,7 +528,7 @@ resource "aws_nat_gateway" "nat_use2c" {
 
 # Route Tables
 ## Private Route Tables
-resource "aws_route_table" "private_use2a_route_table" {
+resource "aws_route_table" "private_use2a" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -539,7 +539,7 @@ resource "aws_route_table" "private_use2a_route_table" {
   }
 }
 
-resource "aws_route_table" "private_use2b_route_table" {
+resource "aws_route_table" "private_use2b" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -550,7 +550,7 @@ resource "aws_route_table" "private_use2b_route_table" {
   }
 }
 
-resource "aws_route_table" "private_use2c_route_table" {
+resource "aws_route_table" "private_use2c" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -563,111 +563,111 @@ resource "aws_route_table" "private_use2c_route_table" {
 
 resource "aws_route" "lb_use2a_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2a_route_table.id
+  route_table_id         = aws_route_table.private_use2a.id
   destination_cidr_block = aws_subnet.lb_use2a.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "lb_use2b_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2b_route_table.id
+  route_table_id         = aws_route_table.private_use2b.id
   destination_cidr_block = aws_subnet.lb_use2a.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "lb_use2c_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2c_route_table.id
+  route_table_id         = aws_route_table.private_use2c.id
   destination_cidr_block = aws_subnet.lb_use2c.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "compute_use2a_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2a_route_table.id
+  route_table_id         = aws_route_table.private_use2a.id
   destination_cidr_block = aws_subnet.compute_use2a.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "compute_use2b_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2b_route_table.id
+  route_table_id         = aws_route_table.private_use2b.id
   destination_cidr_block = aws_subnet.compute_use2b.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "compute_use2c_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2c_route_table.id
+  route_table_id         = aws_route_table.private_use2c.id
   destination_cidr_block = aws_subnet.compute_use2c.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "service_provider_use2a_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2a_route_table.id
+  route_table_id         = aws_route_table.private_use2a.id
   destination_cidr_block = aws_subnet.service_provider_use2_az1.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "service_provider_use2b_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2b_route_table.id
+  route_table_id         = aws_route_table.private_use2b.id
   destination_cidr_block = aws_subnet.service_provider_use2_az2.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "service_provider_use2c_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2c_route_table.id
+  route_table_id         = aws_route_table.private_use2c.id
   destination_cidr_block = aws_subnet.service_provider_use2_az3.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "service_endpoint_use2a_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2a_route_table.id
+  route_table_id         = aws_route_table.private_use2a.id
   destination_cidr_block = aws_subnet.service_endpoint_use2a.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "service_endpoint_use2b_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2b_route_table.id
+  route_table_id         = aws_route_table.private_use2b.id
   destination_cidr_block = aws_subnet.service_endpoint_use2b.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "service_endpoint_use2c_to_private" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.private_use2c_route_table.id
+  route_table_id         = aws_route_table.private_use2c.id
   destination_cidr_block = aws_subnet.service_endpoint_use2c.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "default_use2a_to_firewall" {
-  provider        = aws.use2
-  route_table_id  = aws_route_table.private_use2a_route_table.id
+  provider               = aws.use2
+  route_table_id         = aws_route_table.private_use2a.id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id = local.firewall_endpoints["us-east-2a"]
+  vpc_endpoint_id        = local.firewall_endpoints["us-east-2a"]
 }
 
 resource "aws_route" "default_use2b_to_firewall" {
-  provider        = aws.use2
-  route_table_id  = aws_route_table.private_use2b_route_table.id
+  provider               = aws.use2
+  route_table_id         = aws_route_table.private_use2b.id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id = local.firewall_endpoints["us-east-2b"]
+  vpc_endpoint_id        = local.firewall_endpoints["us-east-2b"]
 }
 
 resource "aws_route" "default_use2c_to_firewall" {
-  provider        = aws.use2
-  route_table_id  = aws_route_table.private_use2c_route_table.id
+  provider               = aws.use2
+  route_table_id         = aws_route_table.private_use2c.id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id = local.firewall_endpoints["us-east-2c"]
+  vpc_endpoint_id        = local.firewall_endpoints["us-east-2c"]
 }
 
 ## Inspection Route Tables
-resource "aws_route_table" "inspection_use2a_route_table" {
+resource "aws_route_table" "inspection_use2a" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -677,7 +677,7 @@ resource "aws_route_table" "inspection_use2a_route_table" {
   }
 }
 
-resource "aws_route_table" "inspection_use2b_route_table" {
+resource "aws_route_table" "inspection_use2b" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -687,7 +687,7 @@ resource "aws_route_table" "inspection_use2b_route_table" {
   }
 }
 
-resource "aws_route_table" "inspection_use2c_route_table" {
+resource "aws_route_table" "inspection_use2c" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -699,48 +699,48 @@ resource "aws_route_table" "inspection_use2c_route_table" {
 
 resource "aws_route" "inspection_use2a_to_local" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.inspection_use2a_route_table.id
+  route_table_id         = aws_route_table.inspection_use2a.id
   destination_cidr_block = aws_subnet.compute_use2a.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "inspection_use2a_to_nat" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.inspection_use2a_route_table.id
+  route_table_id         = aws_route_table.inspection_use2a.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat_use2a.id
 }
 
 resource "aws_route" "inspection_use2b_to_local" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.inspection_use2b_route_table.id
+  route_table_id         = aws_route_table.inspection_use2b.id
   destination_cidr_block = aws_subnet.compute_use2b.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "inspection_use2b_to_nat" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.inspection_use2b_route_table.id
+  route_table_id         = aws_route_table.inspection_use2b.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat_use2b.id
 }
 
 resource "aws_route" "inspection_use2c_to_local" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.inspection_use2c_route_table.id
+  route_table_id         = aws_route_table.inspection_use2c.id
   destination_cidr_block = aws_subnet.compute_use2c.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "inspection_use2c_to_nat" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.inspection_use2c_route_table.id
+  route_table_id         = aws_route_table.inspection_use2c.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat_use2c.id
 }
 
 ## NAT Route Tables
-resource "aws_route_table" "public_use2a_route_table" {
+resource "aws_route_table" "public_use2a" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -751,7 +751,7 @@ resource "aws_route_table" "public_use2a_route_table" {
   }
 }
 
-resource "aws_route_table" "public_use2b_route_table" {
+resource "aws_route_table" "public_use2b" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -762,7 +762,7 @@ resource "aws_route_table" "public_use2b_route_table" {
   }
 }
 
-resource "aws_route_table" "public_use2c_route_table" {
+resource "aws_route_table" "public_use2c" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
@@ -775,42 +775,42 @@ resource "aws_route_table" "public_use2c_route_table" {
 
 resource "aws_route" "nat_use2a_to_inspection" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_use2a_route_table.id
+  route_table_id         = aws_route_table.public_use2a.id
   destination_cidr_block = aws_subnet.inspection_use2a.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "nat_use2a_to_internet" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_use2a_route_table.id
+  route_table_id         = aws_route_table.public_use2a.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
 
 resource "aws_route" "nat_use2b_to_inspection" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_use2b_route_table.id
+  route_table_id         = aws_route_table.public_use2b.id
   destination_cidr_block = aws_subnet.inspection_use2b.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "nat_use2b_to_internet" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_use2b_route_table.id
+  route_table_id         = aws_route_table.public_use2b.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
 
 resource "aws_route" "nat_use2c_to_inspection" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_use2c_route_table.id
+  route_table_id         = aws_route_table.public_use2c.id
   destination_cidr_block = aws_subnet.inspection_use2c.cidr_block
   gateway_id             = "local"
 }
 
 resource "aws_route" "nat_use2c_to_internet" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_use2c_route_table.id
+  route_table_id         = aws_route_table.public_use2c.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
@@ -819,107 +819,107 @@ resource "aws_route" "nat_use2c_to_internet" {
 resource "aws_route_table_association" "lb_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.lb_use2a.id
-  route_table_id = aws_route_table.private_use2a_route_table.id
+  route_table_id = aws_route_table.private_use2a.id
 }
 
 resource "aws_route_table_association" "lb_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.lb_use2b.id
-  route_table_id = aws_route_table.private_use2b_route_table.id
+  route_table_id = aws_route_table.private_use2b.id
 }
 
 resource "aws_route_table_association" "lb_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.lb_use2c.id
-  route_table_id = aws_route_table.private_use2c_route_table.id
+  route_table_id = aws_route_table.private_use2c.id
 }
 
 resource "aws_route_table_association" "compute_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.compute_use2a.id
-  route_table_id = aws_route_table.private_use2a_route_table.id
+  route_table_id = aws_route_table.private_use2a.id
 }
 
 resource "aws_route_table_association" "compute_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.compute_use2b.id
-  route_table_id = aws_route_table.private_use2b_route_table.id
+  route_table_id = aws_route_table.private_use2b.id
 }
 
 resource "aws_route_table_association" "compute_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.compute_use2c.id
-  route_table_id = aws_route_table.private_use2c_route_table.id
+  route_table_id = aws_route_table.private_use2c.id
 }
 
 resource "aws_route_table_association" "service_endpoint_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_endpoint_use2a.id
-  route_table_id = aws_route_table.private_use2a_route_table.id
+  route_table_id = aws_route_table.private_use2a.id
 }
 
 resource "aws_route_table_association" "service_endpoint_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_endpoint_use2b.id
-  route_table_id = aws_route_table.private_use2b_route_table.id
+  route_table_id = aws_route_table.private_use2b.id
 }
 
 resource "aws_route_table_association" "service_endpoint_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_endpoint_use2c.id
-  route_table_id = aws_route_table.private_use2c_route_table.id
+  route_table_id = aws_route_table.private_use2c.id
 }
 
 resource "aws_route_table_association" "service_provider_use2_az1" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_provider_use2_az1.id
-  route_table_id = aws_route_table.private_use2a_route_table.id
+  route_table_id = aws_route_table.private_use2a.id
 }
 
 resource "aws_route_table_association" "service_provider_use2_az2" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_provider_use2_az2.id
-  route_table_id = aws_route_table.private_use2b_route_table.id
+  route_table_id = aws_route_table.private_use2b.id
 }
 
 resource "aws_route_table_association" "service_provider_use2_az3" {
   provider       = aws.use2
   subnet_id      = aws_subnet.service_provider_use2_az3.id
-  route_table_id = aws_route_table.private_use2c_route_table.id
+  route_table_id = aws_route_table.private_use2c.id
 }
 
 resource "aws_route_table_association" "inspection_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.inspection_use2a.id
-  route_table_id = aws_route_table.inspection_use2a_route_table.id
+  route_table_id = aws_route_table.inspection_use2a.id
 }
 
 resource "aws_route_table_association" "inspection_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.inspection_use2b.id
-  route_table_id = aws_route_table.inspection_use2b_route_table.id
+  route_table_id = aws_route_table.inspection_use2b.id
 }
 
 resource "aws_route_table_association" "inspection_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.inspection_use2c.id
-  route_table_id = aws_route_table.inspection_use2c_route_table.id
+  route_table_id = aws_route_table.inspection_use2c.id
 }
 
 resource "aws_route_table_association" "nat_egress_use2a" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_use2a.id
-  route_table_id = aws_route_table.public_use2a_route_table.id
+  route_table_id = aws_route_table.public_use2a.id
 }
 
 resource "aws_route_table_association" "nat_egress_use2b" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_use2b.id
-  route_table_id = aws_route_table.public_use2b_route_table.id
+  route_table_id = aws_route_table.public_use2b.id
 }
 
 resource "aws_route_table_association" "nat_egress_use2c" {
   provider       = aws.use2
   subnet_id      = aws_subnet.public_use2c.id
-  route_table_id = aws_route_table.public_use2c_route_table.id
+  route_table_id = aws_route_table.public_use2c.id
 }

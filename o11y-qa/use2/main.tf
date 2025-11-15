@@ -35,7 +35,7 @@ terraform {
 provider "aws" {
   alias   = "use2"
   region  = "us-east-2"
-  profile = "494568868178_AWSAdministratorAccess"
+  profile = "MyHealthCo-o11y-qa"
 
   default_tags {
     tags = {
@@ -51,7 +51,7 @@ provider "aws" {
 provider "aws" {
   alias   = "usw2"
   region  = "us-west-2"
-  profile = "494568868178_AWSAdministratorAccess"
+  profile = "MyHealthCo-o11y-qa"
 
   default_tags {
     tags = {
