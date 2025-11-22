@@ -23,7 +23,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "ECR-API-Interface-VPC-Endpoint"
+    Name = "ECR-API"
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "ECR-DKR-Interface-VPC-Endpoint"
+    Name = "ECR-DKR"
   }
 }
 
@@ -109,7 +109,7 @@ resource "aws_vpc_endpoint" "logs" {
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "logs-interface-VPC-Endpoint"
+    Name = "logs"
   }
 }
 
@@ -157,7 +157,7 @@ resource "aws_vpc_endpoint" "s3" {
   ]
 
   tags = {
-    Name = "s3-Gateway-VPC-Endpoint"
+    Name = "s3-Gateway"
   }
 }
 
@@ -194,6 +194,49 @@ resource "aws_vpc_endpoint_policy" "s3" {
           "arn:aws:s3:::cloudformation-waitcondition-${data.aws_region.current.region}/*",
         ]
 
+      }
+    ]
+  })
+}
+
+resource "aws_vpc_endpoint" "secrets_manager" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.secretsmanager"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_use2a.id,
+    aws_subnet.service_endpoint_use2b.id,
+    aws_subnet.service_endpoint_use2c.id,
+  ]
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "secrets-manager"
+  }
+}
+
+resource "aws_vpc_endpoint_policy" "secrets_manager" {
+  provider        = aws.use2
+  vpc_endpoint_id = aws_vpc_endpoint.secrets_manager.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowSecretsManagerFromOrgOnly"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "secretsmanager:*"
+        Resource  = "*"
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
+          }
+        }
       }
     ]
   })

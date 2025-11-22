@@ -26,12 +26,15 @@ Parameters:
   AppVpcId:
     Type: String
     Description: VPC ID for the application
-  HONEYCOMB_HOST:
+  HoneycombHost:
     Type: String
     Description: Honeycomb Host
-  HONEYCOMB_PORT:
+  HoneycombPort:
     Type: String
     Description: Honeycomb Port
+  HoneycombSecret:
+    Type: String
+    Description: Honeycomb Secret ARN
 
 Resources:
   ECSCluster:
@@ -58,9 +61,9 @@ Resources:
       ContainerDefinitions:
         - Environment:
           - Name: HONEYCOMB_HOST
-            Value: !Ref HONEYCOMB_HOST
+            Value: !Ref HoneycombHost
           - Name: HONEYCOMB_PORT
-            Value: !Ref HONEYCOMB_PORT
+            Value: !Ref HoneycombPort
           Essential: true
           Image: !Sub ${AppEcrRepoUrl}:${AppEcrReleaseTag}
           LogConfiguration:
@@ -74,7 +77,7 @@ Resources:
           Name: !Sub ${AppName}-task
           Secrets:
             - Name: HONEYCOMB_API_KEY
-              ValueFrom: '{{resolve:secretsmanager:HoneycombApiKey:SecretString:API_KEY}}'
+              ValueFrom: !Sub "${HoneycombSecret}:API_KEY::"
           PortMappings:
           - ContainerPort: 4317
             Protocol: tcp
@@ -93,7 +96,7 @@ Resources:
 
   ECSService:
     Type: AWS::ECS::Service
-    DependsOn: NLBListenerRule
+    DependsOn: ELBListener
     Properties:
       AvailabilityZoneRebalancing: "ENABLED"
       CapacityProviderStrategy:
@@ -103,9 +106,6 @@ Resources:
       DeploymentConfiguration:
         MaximumPercent: 300
         MinimumHealthyPercent: 100
-      DeploymentCircuitBreaker:
-        Enable: true
-        Rollback: true
       DeploymentController:
         Type: ECS
       DesiredCount: 3

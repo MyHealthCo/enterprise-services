@@ -106,7 +106,6 @@ resource "aws_iam_policy" "o11y_gateway_execution" {
         Resource = aws_ecr_repository.gateway_collector.arn
         Condition = {
           StringEquals = {
-            "aws:sourceVpce" : aws_vpc_endpoint.ecr_dkr.id,
             "aws:sourceVpc" : aws_vpc.main.id
           }
         }
@@ -124,6 +123,19 @@ resource "aws_iam_policy" "o11y_gateway_execution" {
           "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/ecs/gateway-collector",
           "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/ecs/gateway-collector:log-stream:*",
           "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/containerinsights/gateway-collector/performance",
+        ]
+      },
+      {
+        Sid    = "AllowSecretsFetch"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:GetParametersByPath",
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = [
+          "${aws_secretsmanager_secret.honeycomb_api_key.arn}"
         ]
       }
     ]

@@ -32,11 +32,15 @@
     "ParameterValue": ""
   },
   {
-    "ParameterKey": "HONEYCOMB_HOST",
+    "ParameterKey": "HoneycombHost",
     "ParameterValue": "api.honeycomb.io"
   },
   {
-    "ParameterKey": "HONEYCOMB_PORT",
+    "ParameterKey": "HoneycombPort",
     "ParameterValue": "443"
+  },
+  {
+    "ParameterKey": "HoneycombSecret",
+    "ParameterValue": ""
   }
 ]
