@@ -22,7 +22,7 @@ resource "aws_iam_policy" "network_firewall" {
           "logs:ListLogDeliveries",
         ]
         Resource = [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/network-firewall/*"
+          "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/network-firewall/*"
         ]
       },
       {
@@ -34,7 +34,7 @@ resource "aws_iam_policy" "network_firewall" {
           "logs:DescribeLogGroups",
         ]
         Resource = [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/network-firewall/*"
+          "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/network-firewall/*"
         ]
       },
       {
@@ -45,7 +45,7 @@ resource "aws_iam_policy" "network_firewall" {
           "logs:GetQueryResults",
         ],
         Resource = [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/network-firewall/*"
+          "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/network-firewall/*"
         ]
       }
     ]
@@ -121,9 +121,9 @@ resource "aws_iam_policy" "o11y_gateway_execution" {
           "logs:PutLogEvents",
         ]
         Resource = [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/ecs/gateway-collector",
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/ecs/gateway-collector:log-stream:*",
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/containerinsights/gateway-collector/performance",
+          "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/ecs/gateway-collector",
+          "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/ecs/gateway-collector:log-stream:*",
+          "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/containerinsights/gateway-collector/performance",
         ]
       }
     ]
