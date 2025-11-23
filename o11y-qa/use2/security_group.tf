@@ -57,6 +57,17 @@ resource "aws_security_group_rule" "allow_lb_otlp_to_tg" {
   description              = "Allow inbound OTel traffic from LoadBalancer-SG"
 }
 
+resource "aws_security_group_rule" "allows_health_check_traffic_from_lb_to_ecs" {
+  provider                 = aws.use2
+  type                     = "egress"
+  from_port                = 13133
+  to_port                  = 13133
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.lb_sg.id
+  source_security_group_id = aws_security_group.collector_sg.id
+  description              = "Allow outbound health check traffic from LoadBalancer-SG"
+}
+
 
 resource "aws_security_group_rule" "allow_collector_otlp_inbound" {
   provider                 = aws.use2
@@ -67,6 +78,17 @@ resource "aws_security_group_rule" "allow_collector_otlp_inbound" {
   security_group_id        = aws_security_group.collector_sg.id
   source_security_group_id = aws_security_group.lb_sg.id
   description              = "Allow inbound OTel traffic from LoadBalancer-SG"
+}
+
+resource "aws_security_group_rule" "allow_collector_health_inbound" {
+  provider                 = aws.use2
+  type                     = "ingress"
+  from_port                = 13133
+  to_port                  = 13133
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.collector_sg.id
+  source_security_group_id = aws_security_group.lb_sg.id
+  description              = "Allow inbound Health Check traffic from LoadBalancer-SG"
 }
 
 resource "aws_security_group_rule" "allow_collector_otlp_to_aggregator" {

@@ -4,8 +4,6 @@ resource "aws_route_table" "private_use2a" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
-
   tags = {
     Name = "private-use2a-route-table"
   }
@@ -15,8 +13,6 @@ resource "aws_route_table" "private_use2b" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
-
   tags = {
     Name = "private-use2b-route-table"
   }
@@ -25,8 +21,6 @@ resource "aws_route_table" "private_use2b" {
 resource "aws_route_table" "private_use2c" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
-
-  route = []
 
   tags = {
     Name = "private-use2c-route-table"
@@ -38,7 +32,6 @@ resource "aws_route_table" "inspection_use2a" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
   tags = {
     Name = "inspection-use2a-route-table"
   }
@@ -48,7 +41,6 @@ resource "aws_route_table" "inspection_use2b" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
   tags = {
     Name = "inspection-use2b-route-table"
   }
@@ -58,7 +50,6 @@ resource "aws_route_table" "inspection_use2c" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
   tags = {
     Name = "inspection-use2c-route-table"
   }
@@ -69,8 +60,6 @@ resource "aws_route_table" "public_use2a" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
-
   tags = {
     Name = "public-use2a-route-table"
   }
@@ -80,8 +69,6 @@ resource "aws_route_table" "public_use2b" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
 
-  route = []
-
   tags = {
     Name = "public-use2b-route-table"
   }
@@ -90,8 +77,6 @@ resource "aws_route_table" "public_use2b" {
 resource "aws_route_table" "public_use2c" {
   provider = aws.use2
   vpc_id   = aws_vpc.main.id
-
-  route = []
 
   tags = {
     Name = "public-use2c-route-table"

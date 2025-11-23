@@ -1,7 +1,7 @@
 resource "aws_lb" "private_link_lb" {
   provider           = aws.use2
-  name               = "o11y-privatelink-lb"
-  internal           = true
+  name               = "o11y-lb"
+  internal           = false
   load_balancer_type = "network"
 
   subnets = [
@@ -19,6 +19,6 @@ resource "aws_lb" "private_link_lb" {
   enforce_security_group_inbound_rules_on_private_link_traffic = "off"
 
   tags = {
-    Name = "o11y-privatelink-lb"
+    Name = "o11y-lb"
   }
 }

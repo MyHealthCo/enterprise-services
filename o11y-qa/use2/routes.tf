@@ -4,6 +4,8 @@ resource "aws_route" "private_to_firewall_use2a" {
   route_table_id         = aws_route_table.private_use2a.id
   destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2a"]
+
+  depends_on = [aws_networkfirewall_firewall.o11y_qa]
 }
 
 resource "aws_route" "private_to_firewall_use2b" {
@@ -11,6 +13,8 @@ resource "aws_route" "private_to_firewall_use2b" {
   route_table_id         = aws_route_table.private_use2b.id
   destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2b"]
+
+  depends_on = [aws_networkfirewall_firewall.o11y_qa]
 }
 
 resource "aws_route" "private_to_firewall_use2c" {
@@ -18,6 +22,8 @@ resource "aws_route" "private_to_firewall_use2c" {
   route_table_id         = aws_route_table.private_use2c.id
   destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2c"]
+
+  depends_on = [aws_networkfirewall_firewall.o11y_qa]
 }
 
 ## Inspection Routes
@@ -69,6 +75,8 @@ resource "aws_route" "nat_return_inspection_use2a" {
   route_table_id         = aws_route_table.public_use2a.id
   destination_cidr_block = "10.0.0.0/8"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2a"]
+
+  depends_on = [aws_networkfirewall_firewall.o11y_qa]
 }
 
 resource "aws_route" "nat_return_inspection_use2b" {
@@ -76,6 +84,8 @@ resource "aws_route" "nat_return_inspection_use2b" {
   route_table_id         = aws_route_table.public_use2b.id
   destination_cidr_block = "10.0.0.0/8"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2b"]
+
+  depends_on = [aws_networkfirewall_firewall.o11y_qa]
 }
 
 resource "aws_route" "nat_return_inspection_use2c" {
@@ -83,4 +93,6 @@ resource "aws_route" "nat_return_inspection_use2c" {
   route_table_id         = aws_route_table.public_use2c.id
   destination_cidr_block = "10.0.0.0/8"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2c"]
+
+  depends_on = [aws_networkfirewall_firewall.o11y_qa]
 }

@@ -104,11 +104,6 @@ resource "aws_iam_policy" "o11y_gateway_execution" {
           "ecr:GetDownloadUrlForLayer",
         ]
         Resource = aws_ecr_repository.gateway_collector.arn
-        Condition = {
-          StringEquals = {
-            "aws:sourceVpc" : aws_vpc.main.id
-          }
-        }
       },
       {
         Sid    = "AllowLogActions"
