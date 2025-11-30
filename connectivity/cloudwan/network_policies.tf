@@ -54,6 +54,7 @@ data "aws_networkmanager_core_network_policy_document" "extension" {
 }
 
 resource "aws_networkmanager_core_network_policy_attachment" "extension" {
+  provider        = aws.use2
   core_network_id = aws_networkmanager_core_network.main.id
   policy_document = data.aws_networkmanager_core_network_policy_document.extension.json
 }
