@@ -21,15 +21,30 @@ resource "aws_networkfirewall_firewall" "o11y_qa" {
 }
 
 resource "aws_networkfirewall_firewall_policy" "o11y_qa" {
-  provider = aws.use2
-  name     = "o11y-qa"
+  provider    = aws.use2
+  name        = "o11y-qa"
+  description = "Default deny policy which allows traffic to specifically allowed segments"
 
   firewall_policy {
-    stateless_default_actions          = ["aws:pass"]
-    stateless_fragment_default_actions = ["aws:drop"]
+    stateful_default_actions = [
+      "aws:alert_established",
+      "aws:alert_strict",
+      "aws:drop_established",
+      "aws:drop_strict",
+    ]
+
+    stateful_engine_options {
+      rule_order = "STRICT_ORDER"
+    }
+
     stateful_rule_group_reference {
+      priority     = 100
       resource_arn = aws_networkfirewall_rule_group.o11y_honeycomb.arn
     }
+
+    stateless_default_actions          = ["aws:forward_to_sfe"]
+    stateless_fragment_default_actions = ["aws:drop"]
+
   }
 
   tags = {
@@ -38,10 +53,11 @@ resource "aws_networkfirewall_firewall_policy" "o11y_qa" {
 }
 
 resource "aws_networkfirewall_rule_group" "o11y_honeycomb" {
-  provider = aws.use2
-  name     = "o11y-honeycomb"
-  capacity = 100
-  type     = "STATEFUL"
+  provider    = aws.use2
+  name        = "o11y-honeycomb"
+  description = "Rule group for allowed FQDNs required to connect to Honeycomb"
+  capacity    = 1
+  type        = "STATEFUL"
 
   rule_group {
     rules_source {
@@ -55,6 +71,10 @@ resource "aws_networkfirewall_rule_group" "o11y_honeycomb" {
           "api.honeycomb.io"
         ]
       }
+    }
+
+    stateful_rule_options {
+      rule_order = "STRICT_ORDER"
     }
   }
 
