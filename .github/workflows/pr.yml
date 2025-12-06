@@ -1,0 +1,45 @@
+name: Pull Request Validation
+run-name: ${{ github.actor }}-tofu-validate
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  tofu-validate:
+    name: OpenTofu Validate
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project:
+          - connectivity/cloudwan
+          - connectivity/consumer/use2
+          - connectivity/egress/use2
+          - o11y-qa/use2
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.6.0
+          tofu_wrapper: false
+
+      - name: Initialize
+        working-directory: ${{ matrix.project }}
+        run: tofu init -backend=false
+
+      - name: Validate
+        working-directory: ${{ matrix.project }}
+        run: tofu validate
+
+      - name: Format check
+        working-directory: ${{ matrix.project }}
+        run: tofu fmt -check -recursive
