@@ -91,7 +91,7 @@ resource "aws_networkfirewall_logging_configuration" "egress" {
   logging_configuration {
     log_destination_config {
       log_destination = {
-        logGroup = aws_cloudwatch_log_group.network_firewall.name
+        logGroup = aws_cloudwatch_log_group.network_firewall_alerts.name
       }
       log_destination_type = "CloudWatchLogs"
       log_type             = "ALERT"
@@ -99,7 +99,7 @@ resource "aws_networkfirewall_logging_configuration" "egress" {
 
     log_destination_config {
       log_destination = {
-        logGroup = aws_cloudwatch_log_group.network_firewall.name
+        logGroup = aws_cloudwatch_log_group.network_firewall_flows.name
       }
       log_destination_type = "CloudWatchLogs"
       log_type             = "FLOW"
@@ -107,7 +107,7 @@ resource "aws_networkfirewall_logging_configuration" "egress" {
 
     log_destination_config {
       log_destination = {
-        logGroup = aws_cloudwatch_log_group.network_firewall.name
+        logGroup = aws_cloudwatch_log_group.network_firewall_tls.name
       }
       log_destination_type = "CloudWatchLogs"
       log_type             = "TLS"
