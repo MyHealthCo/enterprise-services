@@ -20,7 +20,7 @@ variable "tag_project" {
 
 variable "tag_purpose" {
   type    = string
-  default = "o11y"
+  default = "connectivity"
 }
 
 terraform {

@@ -31,7 +31,7 @@ resource "aws_networkmanager_vpc_attachment" "attachment" {
 
   tags = {
     Name                 = "egress-vpc-cw-attach"
-    NetworkFunctionGroup = "egress-qa"
+    NetworkFunctionGroup = "secure-egress-qa"
   }
 }
 
