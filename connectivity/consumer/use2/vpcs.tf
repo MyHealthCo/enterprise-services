@@ -21,7 +21,7 @@ resource "aws_vpc" "main" {
   }
 }
 
-resource "aws-vpc_ipv4_cidr_block_association" "usable_cidr" {
+resource "aws_vpc_ipv4_cidr_block_association" "usable_cidr" {
   provider   = aws.use2
   vpc_id     = aws_vpc.main.id
   cidr_block = var.usable_cidr

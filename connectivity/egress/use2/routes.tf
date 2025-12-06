@@ -114,3 +114,24 @@ resource "aws_route" "public_return_to_inspection_c" {
   destination_cidr_block = "10.0.0.0/8"
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2c"]
 }
+
+resource "aws_route" "public_return_local_a" {
+    provider = aws.use2
+    route_table_id = aws_route_table.public_a.id
+    destination_cidr_block = aws_subnet.internal_a.cidr_block
+    vpc_endpoint_id = local.firewall_endpoints["us-east-2a"]
+}
+
+resource "aws_route" "public_return_local_b" {
+    provider = aws.use2
+    route_table_id = aws_route_table.public_b.id
+    destination_cidr_block = aws_subnet.internal_b.cidr_block
+    vpc_endpoint_id = local.firewall_endpoints["us-east-2b"]
+}
+
+resource "aws_route" "public_return_local_c" {
+    provider = aws.use2
+    route_table_id = aws_route_table.public_c
+    destination_cidr_block = aws_subnet.internal_c.cidr_block
+    vpc_endpoint_id = local.firewall_endpoints["us-east-2c"]
+}
