@@ -1,3 +1,15 @@
+variable "core_network_arn" {
+  description = "Core Network ARN"
+  type        = string
+  default     = ""
+}
+
+variable "core_network_id" {
+  description = "Core Network ID"
+  type        = string
+  default     = ""
+}
+
 variable "tag_contact" {
   type    = string
   default = "djfurman@gmail.com"
