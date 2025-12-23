@@ -1,6 +1,6 @@
 resource "aws_networkfirewall_firewall" "egress" {
   provider            = aws.use2
-  name                = "egress-firewall"
+  name                = "egress"
   firewall_policy_arn = aws_networkfirewall_firewall_policy.egress.arn
   vpc_id              = aws_vpc.main.id
   enabled_analysis_types = [
@@ -19,13 +19,13 @@ resource "aws_networkfirewall_firewall" "egress" {
   }
 
   tags = {
-    Name = "egress-firewall"
+    Name = "egress"
   }
 }
 
 resource "aws_networkfirewall_firewall_policy" "egress" {
   provider = aws.use2
-  name     = "egress-policy"
+  name     = "egress"
 
   firewall_policy {
     stateful_default_actions = [

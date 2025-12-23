@@ -1,16 +1,3 @@
-variable "core_network_arn" {
-  description = "Core Network ARN"
-  type        = string
-  default     = ""
-}
-
-variable "core_network_id" {
-  description = "Core Network ID"
-  type        = string
-  default     = ""
-}
-
-# Core Network
 resource "aws_networkmanager_vpc_attachment" "attachment" {
   provider        = aws.use2
   core_network_id = var.core_network_id

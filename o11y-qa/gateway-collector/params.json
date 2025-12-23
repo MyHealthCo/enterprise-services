@@ -5,31 +5,31 @@
   },
   {
     "ParameterKey": "AppEcrRepoUrl",
-    "ParameterValue": ""
+    "ParameterValue": "494568868178.dkr.ecr.us-east-2.amazonaws.com/o11y/gateway-collector"
   },
   {
     "ParameterKey": "AppEcrReleaseTag",
-    "ParameterValue": ""
+    "ParameterValue": "0.140.0"
   },
   {
     "ParameterKey": "AppIamRole",
-    "ParameterValue": ""
+    "ParameterValue": "arn:aws:iam::494568868178:role/o11y/o11y-Gateway-Collector-RuntimeRole"
   },
   {
     "ParameterKey": "AppNlbArn",
-    "ParameterValue": ""
+    "ParameterValue": "arn:aws:elasticloadbalancing:us-east-2:494568868178:loadbalancer/net/o11y-privatelink-lb/a14df0096173bb85"
   },
   {
     "ParameterKey": "AppSecurityGroups",
-    "ParameterValue": ""
+    "ParameterValue": "sg-0735741d99598bb0e"
   },
   {
     "ParameterKey": "AppSubnetIds",
-    "ParameterValue": ""
+    "ParameterValue": "subnet-01ef94a906c6482ee,subnet-0224ff125ec08ff30,subnet-0b43ce2c449f571f6"
   },
   {
     "ParameterKey": "AppVpcId",
-    "ParameterValue": ""
+    "ParameterValue": "vpc-00c45eb172824c772"
   },
   {
     "ParameterKey": "HoneycombHost",
@@ -41,6 +41,6 @@
   },
   {
     "ParameterKey": "HoneycombSecret",
-    "ParameterValue": ""
+    "ParameterValue": "arn:aws:secretsmanager:us-east-2:494568868178:secret:HoneycombApiKey-20251123T1043-LBSC8l"
   }
 ]
