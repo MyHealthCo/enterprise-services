@@ -1,4 +1,6 @@
 resource "aws_eks_cluster" "compute" {
+  provider = aws.use2
+
   name = "compute-cluster"
 
   access_config {
@@ -48,4 +50,8 @@ resource "aws_eks_cluster" "compute" {
     aws_iam_role_policy_attachment.cluster_AmazonEKSLoadBalancingPolicy,
     aws_iam_role_policy_attachment.cluster_AmazonEKSNetworkingPolicy,
   ]
+}
+
+output "cluster_endpoint" {
+  value = aws_eks_cluster.compute.endpoint
 }

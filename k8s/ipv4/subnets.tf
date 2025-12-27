@@ -5,8 +5,10 @@ resource "aws_subnet" "compute_a" {
   cidr_block        = cidrsubnets(var.cidr_usable, 2, 2, 2, 2)[0]
 
   tags = {
-    Name  = "Compute-A"
-    Usage = "Compute"
+    Name                                                    = "Compute-A"
+    Usage                                                   = "Compute"
+    "kubernetes.io/role/internal-elb"                       = "1"
+    "kubernetes.io/cluster/${aws_eks_cluster.compute.name}" = "shared"
   }
 }
 
@@ -17,8 +19,10 @@ resource "aws_subnet" "compute_b" {
   cidr_block        = cidrsubnets(var.cidr_usable, 2, 2, 2, 2)[1]
 
   tags = {
-    Name  = "Compute-B"
-    Usage = "Compute"
+    Name                                                    = "Compute-B"
+    Usage                                                   = "Compute"
+    "kubernetes.io/role/internal-elb"                       = "1"
+    "kubernetes.io/cluster/${aws_eks_cluster.compute.name}" = "shared"
   }
 }
 
@@ -29,8 +33,10 @@ resource "aws_subnet" "compute_c" {
   cidr_block        = cidrsubnets(var.cidr_usable, 2, 2, 2, 2)[2]
 
   tags = {
-    Name  = "Compute-C"
-    Usage = "Compute"
+    Name                                                    = "Compute-C"
+    Usage                                                   = "Compute"
+    "kubernetes.io/role/internal-elb"                       = "1"
+    "kubernetes.io/cluster/${aws_eks_cluster.compute.name}" = "shared"
   }
 }
 

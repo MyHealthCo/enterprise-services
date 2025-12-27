@@ -6,6 +6,98 @@ data "aws_organizations_organization" "current" {
   provider = aws.use2
 }
 
+data "aws_region" "current" {
+  provider = aws.use2
+}
+
+resource "aws_vpc_endpoint" "autoscaling" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.autoscaling"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id
+  ]
+
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "Autoscaling"
+  }
+}
+
+resource "aws_vpc_endpoint_policy" "autoscaling" {
+  provider        = aws.use2
+  vpc_endpoint_id = aws_vpc_endpoint.autoscaling.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowAutoscalingAccessOnlyFromOrganization"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "autoscaling:*"
+        Resource  = "*"
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_vpc_endpoint" "ec2" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.ec2"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id
+  ]
+
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "EC2"
+  }
+}
+
+resource "aws_vpc_endpoint_policy" "ec2" {
+  provider        = aws.use2
+  vpc_endpoint_id = aws_vpc_endpoint.ec2.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowEC2AccessOnlyFromOrganization"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "ec2:*"
+        Resource  = "*"
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
+          }
+        }
+      }
+    ]
+  })
+}
+
 resource "aws_vpc_endpoint" "ecr_api" {
   provider            = aws.use2
   private_dns_enabled = true
@@ -94,15 +186,101 @@ resource "aws_vpc_endpoint_policy" "ecr_dkr" {
   })
 }
 
+resource "aws_vpc_endpoint" "eks" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.eks"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id
+  ]
+
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "EKS"
+  }
+}
+
+resource "aws_vpc_endpoint" "eks_auth" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.eks-auth"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id
+  ]
+
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "EKS-Auth"
+  }
+}
+
+resource "aws_vpc_endpoint_policy" "eks_auth" {
+  provider        = aws.use2
+  vpc_endpoint_id = aws_vpc_endpoint.eks_auth.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowEKSAuthAccessOnlyFromOrganization"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "eks-auth:*"
+        Resource  = "*"
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_vpc_endpoint" "elb" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.elasticloadbalancing"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id
+  ]
+
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "ELB"
+  }
+}
+
 resource "aws_vpc_endpoint" "logs" {
   provider            = aws.use2
   private_dns_enabled = true
   service_name        = "com.amazonaws.${data.aws_region.current.region}.logs"
 
   subnet_ids = [
-    aws_subnet.service_endpoint_use2a.id,
-    aws_subnet.service_endpoint_use2b.id,
-    aws_subnet.service_endpoint_use2c.id,
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id,
   ]
   security_group_ids = [aws_security_group.service_endpoint_sg.id]
 
@@ -203,4 +381,25 @@ resource "aws_vpc_endpoint_policy" "s3" {
       }
     ]
   })
+}
+
+resource "aws_vpc_endpoint" "sts" {
+  provider            = aws.use2
+  private_dns_enabled = true
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.sts"
+
+  subnet_ids = [
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id
+  ]
+
+  security_group_ids = [aws_security_group.service_endpoint_sg.id]
+
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.main.id
+
+  tags = {
+    Name = "STS"
+  }
 }
