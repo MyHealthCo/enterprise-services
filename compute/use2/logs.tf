@@ -5,7 +5,7 @@ resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   retention_in_days = 1
 
   tags = {
-    Name = "compute-use2"
+    Name = "vpc-flow-logs"
   }
 }
 
@@ -18,7 +18,7 @@ resource "aws_flow_log" "main" {
   vpc_id               = aws_vpc.main.id
 
   tags = {
-    Name = "compute-use2-flow-logs"
+    Name = "main"
   }
 }
 
@@ -41,7 +41,7 @@ resource "aws_iam_role" "vpc_flow_logs" {
   })
 
   tags = {
-    Name = "compute-use2-vpc-flow-logs"
+    Name = "vpc-flow-logs"
   }
 }
 

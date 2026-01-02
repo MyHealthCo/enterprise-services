@@ -4,7 +4,7 @@ resource "aws_route_table" "internal_a" {
   vpc_id   = aws_vpc.main.id
 
   tags = {
-    Name = "compute-internal-a-route-table"
+    Name = "internal-a"
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_route_table" "internal_b" {
   vpc_id   = aws_vpc.main.id
 
   tags = {
-    Name = "compute-internal-b-route-table"
+    Name = "internal-b"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_route_table" "internal_c" {
   vpc_id   = aws_vpc.main.id
 
   tags = {
-    Name = "compute-internal-c-route-table"
+    Name = "internal-c"
   }
 }
 

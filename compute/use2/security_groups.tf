@@ -5,7 +5,7 @@ resource "aws_security_group" "service_endpoint" {
   vpc_id      = aws_vpc.main.id
 
   tags = {
-    Name         = "ServiceEndpoint-SG"
+    Name         = "service-endpoint"
     AllowedUsage = "ServiceEndpoints"
   }
 }

@@ -21,7 +21,7 @@ resource "aws_network_acl" "standard" {
   }
 
   tags = {
-    Name = "Standard NACL"
+    Name = "standard"
   }
 }
 
