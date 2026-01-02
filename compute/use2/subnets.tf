@@ -1,9 +1,9 @@
 # Internal Subnets
 resource "aws_subnet" "internal_a" {
   provider          = aws.use2
-  vpc_id            = aws_vpc_ipv4_cidr_block_association.internal.vpc_id
+  vpc_id            = aws_vpc_ipv4_cidr_block_association.usable.vpc_id
   availability_zone = "us-east-2a"
-  cidr_block        = cidrsubnets(var.cidr_internal, 2, 2, 2)[0]
+  cidr_block        = cidrsubnets(var.cidr_usable, 2, 2, 2)[0]
 
   tags = {
     Name  = "internal-a"
@@ -13,9 +13,9 @@ resource "aws_subnet" "internal_a" {
 
 resource "aws_subnet" "internal_b" {
   provider          = aws.use2
-  vpc_id            = aws_vpc_ipv4_cidr_block_association.internal.vpc_id
+  vpc_id            = aws_vpc_ipv4_cidr_block_association.usable.vpc_id
   availability_zone = "us-east-2b"
-  cidr_block        = cidrsubnets(var.cidr_internal, 2, 2, 2)[1]
+  cidr_block        = cidrsubnets(var.cidr_usable, 2, 2, 2)[1]
 
   tags = {
     Name  = "internal-b"
@@ -25,9 +25,9 @@ resource "aws_subnet" "internal_b" {
 
 resource "aws_subnet" "internal_c" {
   provider          = aws.use2
-  vpc_id            = aws_vpc_ipv4_cidr_block_association.internal.vpc_id
+  vpc_id            = aws_vpc_ipv4_cidr_block_association.usable.vpc_id
   availability_zone = "us-east-2c"
-  cidr_block        = cidrsubnets(var.cidr_internal, 2, 2, 2)[2]
+  cidr_block        = cidrsubnets(var.cidr_usable, 2, 2, 2)[2]
 
   tags = {
     Name  = "internal-c"
