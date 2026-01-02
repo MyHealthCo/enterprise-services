@@ -6,7 +6,7 @@ resource "aws_subnet" "internal_a" {
   cidr_block        = cidrsubnets(var.cidr_internal, 2, 2, 2)[0]
 
   tags = {
-    Name  = "compute-internal-a"
+    Name  = "internal-a"
     Usage = "Internal"
   }
 }
@@ -18,7 +18,7 @@ resource "aws_subnet" "internal_b" {
   cidr_block        = cidrsubnets(var.cidr_internal, 2, 2, 2)[1]
 
   tags = {
-    Name  = "compute-internal-b"
+    Name  = "internal-b"
     Usage = "Internal"
   }
 }
@@ -30,7 +30,7 @@ resource "aws_subnet" "internal_c" {
   cidr_block        = cidrsubnets(var.cidr_internal, 2, 2, 2)[2]
 
   tags = {
-    Name  = "compute-internal-c"
+    Name  = "internal-c"
     Usage = "Internal"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_subnet" "service_endpoint_a" {
   cidr_block        = cidrsubnets(var.cidr_service_endpoint, 2, 2, 2)[0]
 
   tags = {
-    Name  = "compute-service-endpoint-a"
+    Name  = "service-endpoint-a"
     Usage = "ServiceEndpoints"
   }
 }
@@ -55,7 +55,7 @@ resource "aws_subnet" "service_endpoint_b" {
   cidr_block        = cidrsubnets(var.cidr_service_endpoint, 2, 2, 2)[1]
 
   tags = {
-    Name  = "compute-service-endpoint-b"
+    Name  = "service-endpoint-b"
     Usage = "ServiceEndpoints"
   }
 }
@@ -67,7 +67,7 @@ resource "aws_subnet" "service_endpoint_c" {
   cidr_block        = cidrsubnets(var.cidr_service_endpoint, 2, 2, 2)[2]
 
   tags = {
-    Name  = "compute-service-endpoint-c"
+    Name  = "service-endpoint-c"
     Usage = "ServiceEndpoints"
   }
 }

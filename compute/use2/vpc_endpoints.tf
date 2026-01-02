@@ -27,7 +27,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "ECR-API"
+    Name = "ecr-api"
   }
 }
 
@@ -71,7 +71,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "ECR-DKR"
+    Name = "ecr-dkr"
   }
 }
 
@@ -164,7 +164,7 @@ resource "aws_vpc_endpoint" "s3" {
   ]
 
   tags = {
-    Name = "s3-Gateway"
+    Name = "s3"
   }
 }
 
