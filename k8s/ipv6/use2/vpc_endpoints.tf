@@ -1,11 +1,3 @@
-data "aws_caller_identity" "current" {
-  provider = aws.use2
-}
-
-data "aws_organizations_organization" "current" {
-  provider = aws.use2
-}
-
 resource "aws_vpc_endpoint" "ecr_api" {
   provider            = aws.use2
   private_dns_enabled = true
@@ -102,9 +94,9 @@ resource "aws_vpc_endpoint" "logs" {
   service_name        = "com.amazonaws.${data.aws_region.current.region}.logs"
 
   subnet_ids = [
-    aws_subnet.service_endpoint_use2a.id,
-    aws_subnet.service_endpoint_use2b.id,
-    aws_subnet.service_endpoint_use2c.id,
+    aws_subnet.service_endpoint_a.id,
+    aws_subnet.service_endpoint_b.id,
+    aws_subnet.service_endpoint_c.id,
   ]
   security_group_ids = [aws_security_group.service_endpoint_sg.id]
 
