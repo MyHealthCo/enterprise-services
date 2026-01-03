@@ -4,8 +4,6 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  ipv6_netmask_length = 56
-
   tags = {
     Name = "k8s-ipv6"
   }

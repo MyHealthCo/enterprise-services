@@ -5,10 +5,10 @@ resource "aws_subnet" "compute_a" {
   cidr_block        = cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable.cidr_block, 2, 2, 2, 2)[0]
 
   tags = {
-    Name                                                    = "Compute-A"
-    Usage                                                   = "Compute"
-    "kubernetes.io/role/internal-elb"                       = "1"
-    "kubernetes.io/cluster/compute" = "shared"
+    Name                              = "Compute-A"
+    Usage                             = "Compute"
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/compute"   = "shared"
   }
 }
 
@@ -19,10 +19,10 @@ resource "aws_subnet" "compute_b" {
   cidr_block        = cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable.cidr_block, 2, 2, 2, 2)[1]
 
   tags = {
-    Name                                                    = "Compute-B"
-    Usage                                                   = "Compute"
-    "kubernetes.io/role/internal-elb"                       = "1"
-    "kubernetes.io/cluster/compute" = "shared"
+    Name                              = "Compute-B"
+    Usage                             = "Compute"
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/compute"   = "shared"
   }
 }
 
@@ -33,10 +33,10 @@ resource "aws_subnet" "compute_c" {
   cidr_block        = cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable.cidr_block, 2, 2, 2, 2)[2]
 
   tags = {
-    Name                                                    = "Compute-C"
-    Usage                                                   = "Compute"
-    "kubernetes.io/role/internal-elb"                       = "1"
-    "kubernetes.io/cluster/compute" = "shared"
+    Name                              = "Compute-C"
+    Usage                             = "Compute"
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/compute"   = "shared"
   }
 }
 
