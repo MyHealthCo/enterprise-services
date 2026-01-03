@@ -431,6 +431,7 @@ Never create duplicate variables in resource files. Always use variables defined
 resource "aws_vpc_ipv4_cidr_block_association" "internal" {
   cidr_block = var.cidr_usable  # Uses existing variable
 }
+```
 
 **Bad:**
 
