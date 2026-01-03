@@ -20,8 +20,8 @@ jobs:
           - connectivity/cloudwan
           - connectivity/consumer/use2
           - connectivity/egress/use2
-          - k8s/ipv4
-          - k8s/ipv6
+          - k8s/ipv4/use2
+          - k8s/ipv6/use2
           - o11y-qa/use2
       fail-fast: false
 
