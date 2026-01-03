@@ -217,6 +217,7 @@ resource "aws_vpc_ipv4_cidr_block_association" "internal" {
 resource "aws_vpc_ipv4_cidr_block_association" "service_endpoint" {
   cidr_block = var.cidr_service_endpoint
 }
+```
 
 ### Route Table Isolation
 
