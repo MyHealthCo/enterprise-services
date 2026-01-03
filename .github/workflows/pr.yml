@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         project:
+          - compute/use2
           - connectivity/cloudwan
           - connectivity/consumer/use2
           - connectivity/egress/use2

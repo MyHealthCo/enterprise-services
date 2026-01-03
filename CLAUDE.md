@@ -2,13 +2,11 @@
 
 This document captures the Terraform/OpenTofu practices derived from analyzing all `**/*.tf` files in this repository.
 
-## Naming Conventions
+## Resource Naming Conventions
 
 Resource naming should be considered namespaced by the type declarations in hcl. Do **not** repeat infomation that is already stated in resource types.
 
-Examples:
-
-Good:
+**Good:**
 
 ```hcl
 resource "aws_security_group" "compute" {}
@@ -16,7 +14,7 @@ resource "aws_security_group" "compute" {}
 resource "aws_security_group" "service_endpoint" {}
 ```
 
-Bad:
+**Bad:**
 
 ```hcl
 resource "aws_security_group" "compute_sg" {}
@@ -119,7 +117,7 @@ Resources are organized into separate files by logical grouping:
 - `security_groups.tf` - Security group resources
 - `network_acls.tf` - Network ACL resources
 - `vpc_endpoints.tf` - VPC endpoint resources
-- `iam.tf` - IAM role and policy resources
+- `iam.tf` - IAM role and policy resources (always separate from other resource types, even if closely related like VPC Flow Logs)
 - `eks.tf` - EKS cluster resources
 - `igws.tf` - Internet gateway resources
 - `nats.tf` - NAT gateway resources
@@ -181,6 +179,44 @@ Pattern breakdown:
 
 - First level splits usable CIDR into 3 segments (one per tier)
 - Second level splits each tier into 3 AZ-specific subnets
+
+#### CIDR Reference Pattern
+
+When defining subnets, always reference the CIDR block from the association resource rather than variables directly:
+
+**Good:**
+
+```hcl
+resource "aws_subnet" "internal_a" {
+  cidr_block = cidrsubnets(aws_vpc_ipv4_cidr_block_association.internal.cidr_block, 2, 2, 2)[0]
+}
+```
+
+**Bad:**
+
+```hcl
+resource "aws_subnet" "internal_a" {
+  cidr_block = cidrsubnets(var.cidr_usable, 2, 2, 2)[0]
+}
+```
+
+#### Service Endpoint CIDR Ranges
+
+Service endpoint CIDR ranges (e.g., `10.100.0.0/19` of `us-east-2` or `10.100.32.0.0/19` for `us-west-2`) are non-routable and used exclusively for VPC endpoint ENIs. These ranges can overlap across VPCs since they are not routed between VPCs. Do not treat these as routable CIDR ranges when checking for conflicts.
+
+#### CIDR Block Association Naming
+
+Name CIDR block associations based on their purpose, not the variable name:
+
+```hcl
+# Name based on subnet type it supports
+resource "aws_vpc_ipv4_cidr_block_association" "internal" {
+  cidr_block = var.cidr_usable
+}
+
+resource "aws_vpc_ipv4_cidr_block_association" "service_endpoint" {
+  cidr_block = var.cidr_service_endpoint
+}
 
 ### Route Table Isolation
 
@@ -382,6 +418,27 @@ variable "name" {
 - Tag variables have defaults (optional)
 - Infrastructure-specific variables may have empty defaults requiring override
 - Description field used consistently
+
+### Avoid Variable Duplication
+
+Never create duplicate variables in resource files. Always use variables defined in `variables.tf`:
+
+**Good:**
+
+```hcl
+# In vpcs.tf
+resource "aws_vpc_ipv4_cidr_block_association" "internal" {
+  cidr_block = var.cidr_usable  # Uses existing variable
+}
+
+**Bad:**
+
+```hcl
+# In vpcs.tf
+variable "cidr_internal" {  # Duplicate of cidr_usable
+  default = "10.2.10.0/23"
+}
+```
 
 ## Documentation Through Code
 
