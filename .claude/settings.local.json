@@ -1,6 +1,14 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(tofu fmt:*)",
+      "Bash(git -C /Users/djfurman/Code/myhealthco/enterprise-services diff --stat)",
+      "Bash(git -C /Users/djfurman/Code/myhealthco/enterprise-services diff)",
+      "Bash(git -C /Users/djfurman/Code/myhealthco/enterprise-services status --porcelain)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "aws-mcp"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }
