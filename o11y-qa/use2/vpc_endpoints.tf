@@ -1,12 +1,4 @@
 # VPC Endpoints
-data "aws_caller_identity" "current" {
-  provider = aws.use2
-}
-
-data "aws_organizations_organization" "current" {
-  provider = aws.use2
-}
-
 resource "aws_vpc_endpoint" "ecr_api" {
   provider            = aws.use2
   private_dns_enabled = true

@@ -11,3 +11,7 @@ resource "aws_ecr_repository" "gateway_collector" {
     Name = "o11y-qa-otel-gateway-collector-repo"
   }
 }
+
+output "gateway_collector_repository_url" {
+  value = aws_ecr_repository.gateway_collector.repository_url
+}

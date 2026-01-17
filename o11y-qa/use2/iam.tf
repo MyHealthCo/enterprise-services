@@ -1,7 +1,3 @@
-data "aws_region" "current" {
-  provider = aws.use2
-}
-
 resource "aws_iam_policy" "network_firewall" {
   provider    = aws.use2
   name        = "NetworkFirewall-LoggingPolicy"
@@ -161,4 +157,8 @@ resource "aws_iam_role_policy_attachment" "o11y_gateway_execution" {
   provider   = aws.use2
   role       = aws_iam_role.o11y_gateway_execution.name
   policy_arn = aws_iam_policy.o11y_gateway_execution.arn
+}
+
+output "o11y_gateway_execution_role_arn" {
+  value       = aws_iam_role.o11y_gateway_execution.arn
 }

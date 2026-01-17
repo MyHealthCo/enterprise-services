@@ -123,3 +123,7 @@ resource "aws_security_group_rule" "allow_service_endpoint_https_inbound" {
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "Allow inbound HTTPS traffic to Service Endpoints"
 }
+
+output "app_security_group" {
+    value = aws_security_group.collector_sg.id
+}

@@ -15,10 +15,14 @@ resource "aws_lb" "private_link_lb" {
   ]
 
   enable_cross_zone_load_balancing                             = true
-  enable_deletion_protection                                   = true
+  enable_deletion_protection                                   = false
   enforce_security_group_inbound_rules_on_private_link_traffic = "off"
 
   tags = {
     Name = "o11y-lb"
   }
+}
+
+output "private_link_lb_arn" {
+  value = aws_lb.private_link_lb.arn
 }

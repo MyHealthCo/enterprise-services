@@ -220,3 +220,11 @@ resource "aws_subnet" "public_use2c" {
     Usage = "PublicNAT"
   }
 }
+
+output "compute_subnets" {
+  value = join(",", [
+    aws_subnet.compute_use2a.id,
+    aws_subnet.compute_use2b.id,
+    aws_subnet.compute_use2c.id,
+  ])
+}

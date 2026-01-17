@@ -1,34 +1,3 @@
-# CIDR Ranges
-variable "lb_cidr_range" {
-  type    = string
-  default = "10.1.0.0/24"
-}
-
-variable "service_provider_cidr_range" {
-  type    = string
-  default = "10.100.0.0/19"
-}
-
-variable "service_endpoint_cidr_range" {
-  type    = string
-  default = "10.100.32.0/19"
-}
-
-variable "compute_cidr_range" {
-  type    = string
-  default = "10.2.0.0/22"
-}
-
-variable "inspection_cidr_range" {
-  type    = string
-  default = "10.1.1.0/26"
-}
-
-variable "public_cidr_range" {
-  type    = string
-  default = "10.1.1.64/26"
-}
-
 # VPC
 resource "aws_vpc" "main" {
   provider             = aws.use2
@@ -76,4 +45,8 @@ resource "aws_vpc_ipv4_cidr_block_association" "public_cidr_range" {
   provider   = aws.use2
   vpc_id     = aws_vpc.main.id
   cidr_block = var.public_cidr_range
+}
+
+output "vpc_id" {
+  value = aws_vpc.main.id
 }
