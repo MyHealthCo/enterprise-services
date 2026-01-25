@@ -8,6 +8,11 @@ data "aws_networkmanager_core_network_policy_document" "main" {
       location = "us-east-2"
       asn      = "4200000102"
     }
+
+    edge_locations {
+      location = "us-west-2"
+      asn      = "4200000202"
+    }
   }
 
   segments {
@@ -57,7 +62,7 @@ data "aws_networkmanager_core_network_policy_document" "main" {
     conditions {
       type     = "tag-value"
       operator = "equals"
-      key      = "segment"
+      key      = "NetworkSegment"
       value    = "qa"
     }
 
@@ -74,7 +79,7 @@ data "aws_networkmanager_core_network_policy_document" "main" {
     conditions {
       type     = "tag-value"
       operator = "equals"
-      key      = "segment"
+      key      = "NetworkSegment"
       value    = "prod"
     }
 

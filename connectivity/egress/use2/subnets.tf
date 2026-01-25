@@ -1,3 +1,7 @@
+locals {
+  azs = ["a", "b", "c"]
+}
+
 resource "aws_subnet" "internal_a" {
   provider          = aws.use2
   vpc_id            = aws_vpc.main.id
@@ -5,8 +9,8 @@ resource "aws_subnet" "internal_a" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[0], 2, 2, 2)[0]
 
   tags = {
-    Name  = "internal-a"
-    Usage = "Internal"
+    Name    = "internal-a"
+    Purpose = "Internal"
   }
 }
 
@@ -17,8 +21,8 @@ resource "aws_subnet" "internal_b" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[0], 2, 2, 2)[1]
 
   tags = {
-    Name  = "internal-b"
-    Usage = "Internal"
+    Name    = "internal-b"
+    Purpose = "Internal"
   }
 }
 
@@ -29,8 +33,8 @@ resource "aws_subnet" "internal_c" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[0], 2, 2, 2)[2]
 
   tags = {
-    Name  = "internal-c"
-    Usage = "Internal"
+    Name    = "internal-c"
+    Purpose = "Internal"
   }
 }
 
@@ -41,20 +45,20 @@ resource "aws_subnet" "inspection_a" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[1], 2, 2, 2)[0]
 
   tags = {
-    Name  = "inspection-a"
-    Usage = "Inspection"
+    Name    = "inspection-a"
+    Purpose = "Inspection"
   }
 }
 
 resource "aws_subnet" "inspection_b" {
   provider          = aws.use2
   vpc_id            = aws_vpc.main.id
-  availability_zone = "us-east-2a"
+  availability_zone = "us-east-2b"
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[1], 2, 2, 2)[1]
 
   tags = {
-    Name  = "inspection-b"
-    Usage = "Inspection"
+    Name    = "inspection-b"
+    Purpose = "Inspection"
   }
 }
 
@@ -65,8 +69,8 @@ resource "aws_subnet" "inspection_c" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[1], 2, 2, 2)[2]
 
   tags = {
-    Name  = "inspection-c"
-    Usage = "Inspection"
+    Name    = "inspection-c"
+    Purpose = "Inspection"
   }
 }
 
@@ -77,8 +81,8 @@ resource "aws_subnet" "public_a" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[2], 2, 2, 2)[0]
 
   tags = {
-    Name  = "public-a"
-    Usage = "Public-NAT"
+    Name    = "public-a"
+    Purpose = "Public-NAT"
   }
 }
 
@@ -89,8 +93,8 @@ resource "aws_subnet" "public_b" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[2], 2, 2, 2)[1]
 
   tags = {
-    Name  = "public-b"
-    Usage = "Public-NAT"
+    Name    = "public-b"
+    Purpose = "Public-NAT"
   }
 }
 
@@ -101,7 +105,7 @@ resource "aws_subnet" "public_c" {
   cidr_block        = cidrsubnets(cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[2], 2, 2, 2)[2]
 
   tags = {
-    Name  = "public-c"
-    Usage = "Public-NAT"
+    Name    = "public-c"
+    Purpose = "Public-NAT"
   }
 }

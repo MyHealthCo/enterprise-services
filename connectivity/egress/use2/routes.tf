@@ -131,7 +131,7 @@ resource "aws_route" "public_return_local_b" {
 
 resource "aws_route" "public_return_local_c" {
   provider               = aws.use2
-  route_table_id         = aws_route_table.public_c
+  route_table_id         = aws_route_table.public_c.id
   destination_cidr_block = aws_subnet.internal_c.cidr_block
   vpc_endpoint_id        = local.firewall_endpoints["us-east-2c"]
 }

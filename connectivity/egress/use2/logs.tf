@@ -1,3 +1,14 @@
+resource "aws_cloudwatch_log_group" "flow_logs" {
+  provider          = aws.use2
+  name              = "vpc-flow-logs"
+  log_group_class   = "STANDARD"
+  retention_in_days = 1
+
+  tags = {
+    Name = "egress-vpc-flow-logs"
+  }
+}
+
 resource "aws_cloudwatch_log_group" "network_firewall_alerts" {
   provider          = aws.use2
   name              = "/aws/network-firewall/egress-alerts"
