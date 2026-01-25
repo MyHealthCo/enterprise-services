@@ -5,8 +5,8 @@ resource "aws_subnet" "internal_a" {
   cidr_block        = cidrsubnets(aws_vpc_ipv4_cidr_block_association.usable_cidr, 2, 2, 2)[0]
 
   tags = {
-    Name  = "internal-a"
-    Usage = "Internal"
+    Name    = "internal-a"
+    Purpose = "Internal"
   }
 }
 

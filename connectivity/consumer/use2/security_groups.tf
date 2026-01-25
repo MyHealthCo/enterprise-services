@@ -8,3 +8,13 @@ resource "aws_security_group" "tester" {
     Purpose = "Test Egress Connectivity"
   }
 }
+
+resource "aws_security_group_rule" "tester_ingress_http" {
+  provider          = aws.use2
+  type              = "egress"
+  from_port         = -1
+  to_port           = -1
+  protocol          = "tcp"
+  security_group_id = aws_security_group.tester.id
+  cidr_blocks       = ["0.0.0.0/0"]
+}

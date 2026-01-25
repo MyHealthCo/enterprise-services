@@ -1,6 +1,6 @@
 resource "aws_ram_resource_share" "core_network_to_egress" {
   provider                  = aws.cloudwan
-  allow_external_principals = true
+  allow_external_principals = false
   name                      = "corenetwork-to-egress"
 }
 
